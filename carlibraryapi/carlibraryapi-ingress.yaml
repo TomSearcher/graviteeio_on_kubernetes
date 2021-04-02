@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  name: carlibraryapi
+spec:
+  rules:
+  - host: clapi2.mydomain.net
+    http:
+      paths:
+      - backend:
+          serviceName: carlibraryapi
+          servicePort: 5000
+        path: /
+  tls:
+  - hosts:
+    - clapi2.mydomain.net
+#    secretName: api-custom-cert
