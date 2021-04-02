@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: carlibraryapi
+  name: carlibraryapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carlibraryapi
+  template:
+    metadata:
+      labels:
+        app: carlibraryapi
+    spec:
+      containers:
+      - name: carlibraryapi
+        image: tomsearcher/carlibraryapi
+        env:
+        - name: DBConnection__Host
+          value: postgres
+        - name: DBConnection__Port
+          value: "5432"
+        - name: DBConnection__User
+          value: postgres
+        - name: DBConnection__Password 
+          value: "apassword"
+        - name: DBConnection__Database 
+          value: CarLibrary
+        - name: ASPNETCORE_URLS
+          value: "http://*:5000"
+        ports:
+          - containerPort: 5000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: carlibraryapi
+  labels:
+    app: carlibraryapi
+spec:
+  ports:
+  - port: 5000
+    name: carlibraryapi
+  clusterIP: None
+  selector:
+    app: carlibraryapi
